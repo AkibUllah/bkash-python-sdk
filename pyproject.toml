@@ -1,0 +1,76 @@
+[build-system]
+requires = ["hatchling>=1.21"]
+build-backend = "hatchling.build"
+
+[project]
+name = "bkash-checkout"
+version = "0.1.0"
+description = "Typed Python client for the bKash Tokenized Checkout API: sync + async, auto token refresh, retries, IPN helpers"
+readme = "README.md"
+license = { text = "MIT" }
+authors = [{ name = "Akib Jafor" }]
+requires-python = ">=3.10"
+keywords = ["bkash", "payments", "bangladesh", "mfs", "tokenized-checkout", "httpx", "fintech"]
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Intended Audience :: Developers",
+  "License :: OSI Approved :: MIT License",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Topic :: Office/Business :: Financial",
+  "Typing :: Typed",
+]
+dependencies = [
+  "httpx>=0.26",
+  "pydantic>=2.5,<3.0",
+]
+
+[project.optional-dependencies]
+dev = [
+  "pytest>=7.4",
+  "pytest-asyncio>=0.23",
+  "respx>=0.21",
+  "ruff>=0.3",
+  "mypy>=1.8",
+]
+examples = [
+  "fastapi>=0.110",
+  "uvicorn>=0.27",
+]
+
+[project.urls]
+Homepage = "https://github.com/AkibUllah/bkash-python-sdk"
+Changelog = "https://github.com/AkibUllah/bkash-python-sdk/blob/main/CHANGELOG.md"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/bkash"]
+
+[tool.hatch.build.targets.sdist]
+include = ["src/bkash", "tests", "examples", "README.md", "CHANGELOG.md", "LICENSE"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
+asyncio_mode = "auto"
+asyncio_default_fixture_loop_scope = "function"
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+src = ["src", "tests", "examples"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP", "W", "RUF"]
+ignore = ["RUF012"]
+
+[tool.ruff.lint.isort]
+known-first-party = ["bkash"]
+
+[tool.mypy]
+python_version = "3.10"
+strict = true
+packages = ["bkash"]
+mypy_path = "src"
+plugins = ["pydantic.mypy"]
