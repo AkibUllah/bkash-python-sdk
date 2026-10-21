@@ -1,3 +1,4 @@
+<!-- topics: bkash,python,sdk,payment,httpx,pydantic,async,bangladesh,fintech -->
 # bkash-python-sdk
 
 A typed Python client for the bKash Tokenized Checkout API with sync and async clients, automatic token refresh, retries with backoff, Pydantic models for every request and response, and helpers for IPN notifications.
