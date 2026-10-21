@@ -34,7 +34,15 @@ from bkash.webhooks import verify_with_search
 logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(name)s %(message)s")
 log = logging.getLogger("checkout-example")
 
-PUBLIC_BASE_URL = os.getenv("PUBLIC_BASE_URL", "http://localhost:8000").rstrip("/")
+
+def public_base_url(environ: dict[str, str] | None = None) -> str:
+    """Base URL for callback/IPN URLs: PUBLIC_BASE_URL, else Render's RENDER_EXTERNAL_URL."""
+    env = os.environ if environ is None else environ
+    url = env.get("PUBLIC_BASE_URL") or env.get("RENDER_EXTERNAL_URL") or "http://localhost:8000"
+    return url.rstrip("/")
+
+
+PUBLIC_BASE_URL = public_base_url()
 
 # In-memory order store; a real app persists orders and the paymentID -> order mapping.
 ORDERS: dict[str, dict[str, Any]] = {}
