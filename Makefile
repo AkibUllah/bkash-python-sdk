@@ -2,7 +2,7 @@
 VENV ?= .venv
 PY := $(VENV)/bin/python
 
-.PHONY: help venv install test lint fmt typecheck build example clean
+.PHONY: help venv install test lint fmt typecheck build example openapi clean
 
 help: ## Show targets
 	@grep -E '^[a-zA-Z_-]+:.*?## ' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "  \033[36m%-12s\033[0m %s\n", $$1, $$2}'
@@ -35,6 +35,9 @@ build: ## Build sdist + wheel into dist/
 
 example: ## Run the FastAPI checkout example on :8000 (needs BKASH_* env vars)
 	$(VENV)/bin/uvicorn examples.fastapi_checkout.main:app --reload --port 8000
+
+openapi: ## Export the checkout example's OpenAPI document to openapi.json
+	$(PY) scripts/export_openapi.py
 
 clean: ## Remove build artefacts and caches
 	rm -rf dist build .pytest_cache .ruff_cache .mypy_cache

@@ -9,6 +9,15 @@ A typed Python client for the bKash Tokenized Checkout API with sync and async c
 ![Typed](https://img.shields.io/badge/typing-py.typed-informational)
 ![License](https://img.shields.io/badge/license-MIT-green)
 
+## Try it live
+
+| | |
+|---|---|
+| API reference | https://akibullah.github.io/bkash-python-sdk/ — Swagger UI of the bundled FastAPI checkout example, built from its exported OpenAPI document (static; no backend behind it) |
+| Run in your browser | [![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/AkibUllah/bkash-python-sdk?quickstart=1) — installs the SDK and starts the checkout example on forwarded port 8000 (`/` demo form, `/docs`). Add `BKASH_APP_KEY`, `BKASH_APP_SECRET`, `BKASH_USERNAME` and `BKASH_PASSWORD` as Codespaces secrets to make real sandbox payments; without them the sandbox rejects `POST /checkout`. |
+| One-click deploy | [![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/AkibUllah/bkash-python-sdk) — `render.yaml` deploys the example and prompts for the four sandbox credentials; callback and IPN URLs follow the Render hostname. |
+| Local | `docker compose up` (see Quick Start) |
+
 ## Why this exists
 
 bKash is the mobile wallet most Bangladeshi customers reach for, and integrating it has meant copying the same 300 lines between projects: grant a token, remember when it expires, add the two auth headers, map `statusCode != "0000"` to an exception, retry the occasional 5xx, and work out what the SNS-wrapped IPN body actually contains. I wrote this package so that logic lives in one tested place with proper types, so a checkout flow reads as `create → redirect → execute → fulfil` instead of HTTP plumbing. It targets the Tokenized Checkout API (`v1.2.0-beta`) sandbox and production hosts and never touches the network in its test suite.

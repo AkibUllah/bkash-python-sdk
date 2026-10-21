@@ -1,0 +1,25 @@
+# Render blueprint: the FastAPI checkout example built on the SDK. You are prompted for the
+# four sandbox credentials issued by bKash; callback URLs use RENDER_EXTERNAL_URL automatically.
+# https://render.com/docs/blueprint-spec
+services:
+  - type: web
+    name: bkash-checkout-example
+    runtime: docker
+    plan: free
+    dockerfilePath: ./Dockerfile
+    dockerContext: .
+    healthCheckPath: /health
+    autoDeploy: true
+    envVars:
+      - key: PORT
+        value: "8000"
+      - key: BKASH_ENVIRONMENT
+        value: sandbox
+      - key: BKASH_APP_KEY
+        sync: false
+      - key: BKASH_APP_SECRET
+        sync: false
+      - key: BKASH_USERNAME
+        sync: false
+      - key: BKASH_PASSWORD
+        sync: false

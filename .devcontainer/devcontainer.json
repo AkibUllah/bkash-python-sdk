@@ -1,0 +1,26 @@
+{
+  "name": "bkash-python-sdk",
+  "image": "mcr.microsoft.com/devcontainers/python:1-3.11-bookworm",
+  "hostRequirements": {
+    "cpus": 2,
+    "memory": "4gb"
+  },
+  "forwardPorts": [8000],
+  "portsAttributes": {
+    "8000": {
+      "label": "Checkout example (/) and API docs (/docs)",
+      "onAutoForward": "notify"
+    }
+  },
+  "postCreateCommand": "pip install -e \".[dev,examples]\" python-multipart",
+  "postStartCommand": "bash .devcontainer/post-start.sh",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-python.python",
+        "charliermarsh.ruff",
+        "ms-python.mypy-type-checker"
+      ]
+    }
+  }
+}
