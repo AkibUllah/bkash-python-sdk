@@ -6,6 +6,14 @@ All notable changes to this project are documented here. The format follows
 
 ## [Unreleased]
 
+### Added
+- CodeQL code scanning workflow and Dependabot configuration (pip, Docker, GitHub Actions).
+- Screenshots of the example's API reference and a terminal run in the README.
+- Roadmap tracked as GitHub issues under the `v0.2.0` milestone.
+
+### Changed
+- CI workflow runs with a read-only `GITHUB_TOKEN` by default.
+
 ## [0.1.0] - 2026-10-21
 
 ### Added
