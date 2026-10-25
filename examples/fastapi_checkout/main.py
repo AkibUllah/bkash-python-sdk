@@ -14,6 +14,7 @@ import os
 import secrets
 from contextlib import asynccontextmanager
 from decimal import Decimal
+from html import escape
 from typing import Any
 
 import httpx
@@ -103,9 +104,12 @@ async def callback(request: Request, paymentID: str, status: str):
     if order is None:
         raise HTTPException(status_code=404, detail="unknown payment")
     if status != "success":
-        order["status"] = status  # "failure" or "cancel"
+        # bKash sends "failure" or "cancel"; anything else is recorded as a failure.
+        outcome = status if status in {"failure", "cancel"} else "failure"
+        order["status"] = outcome
         return (
-            f"<h1>Payment {status}</h1><p>Invoice {order['invoice']}</p><a href='/'>Try again</a>"
+            f"<h1>Payment {outcome}</h1><p>Invoice {escape(order['invoice'])}</p>"
+            "<a href='/'>Try again</a>"
         )
 
     client = _client(request)
@@ -119,19 +123,22 @@ async def callback(request: Request, paymentID: str, status: str):
                 order.update(status="paid", trx_id=queried.trx_id)
                 return _receipt(order)
         order["status"] = "failed"
-        return f"<h1>Payment failed</h1><p>{exc.error_code}: {exc.error_message}</p>"
+        return (
+            f"<h1>Payment failed</h1><p>{escape(str(exc.error_code))}: "
+            f"{escape(str(exc.error_message))}</p>"
+        )
 
     if executed.is_completed:
         order.update(status="paid", trx_id=executed.trx_id)
         return _receipt(order)
     order["status"] = executed.transaction_status.value
-    return f"<h1>Payment {executed.transaction_status.value}</h1>"
+    return f"<h1>Payment {escape(executed.transaction_status.value)}</h1>"
 
 
 def _receipt(order: dict[str, Any]) -> str:
     return (
-        f"<h1>Payment received</h1><p>Invoice {order['invoice']}<br>"
-        f"Amount ৳{order['amount']}<br>bKash TrxID {order.get('trx_id')}</p>"
+        f"<h1>Payment received</h1><p>Invoice {escape(order['invoice'])}<br>"
+        f"Amount ৳{escape(order['amount'])}<br>bKash TrxID {escape(str(order.get('trx_id')))}</p>"
     )
 
 
@@ -140,7 +147,8 @@ async def ipn(request: Request):
     try:
         message = parse_ipn(await request.body())
     except BkashWebhookError as exc:
-        return JSONResponse({"error": str(exc)}, status_code=400)
+        log.warning("rejected IPN message: %s", exc)
+        return JSONResponse({"error": "invalid IPN message"}, status_code=400)
 
     if isinstance(message, IPNSubscriptionConfirmation):
         async with httpx.AsyncClient(timeout=10) as http:

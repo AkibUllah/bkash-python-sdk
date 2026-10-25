@@ -14,6 +14,9 @@ All notable changes to this project are documented here. The format follows
 ### Changed
 - CI workflow runs with a read-only `GITHUB_TOKEN` by default.
 
+### Fixed
+- Checkout example: callback pages HTML-escape every interpolated value and no longer echo the raw `status` query parameter (reflected XSS), and IPN rejections return a generic error instead of the parser exception text.
+
 ## [0.1.0] - 2026-10-21
 
 ### Added
