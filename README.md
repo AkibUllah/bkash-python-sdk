@@ -4,6 +4,8 @@
 A typed Python client for the bKash Tokenized Checkout API with sync and async clients, automatic token refresh, retries with backoff, Pydantic models for every request and response, and helpers for IPN notifications.
 
 [![CI](https://github.com/AkibUllah/bkash-python-sdk/actions/workflows/ci.yml/badge.svg)](https://github.com/AkibUllah/bkash-python-sdk/actions/workflows/ci.yml)
+[![CodeQL](https://github.com/AkibUllah/bkash-python-sdk/actions/workflows/codeql.yml/badge.svg)](https://github.com/AkibUllah/bkash-python-sdk/actions/workflows/codeql.yml)
+[![Release](https://img.shields.io/github/v/release/AkibUllah/bkash-python-sdk)](https://github.com/AkibUllah/bkash-python-sdk/releases)
 ![Python](https://img.shields.io/badge/python-3.10%20%7C%203.11%20%7C%203.12-blue)
 ![PyPI name](https://img.shields.io/badge/package-bkash--checkout%200.1.0-e2136e)
 ![Typed](https://img.shields.io/badge/typing-py.typed-informational)
@@ -17,6 +19,16 @@ A typed Python client for the bKash Tokenized Checkout API with sync and async c
 | Run in your browser | [![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/AkibUllah/bkash-python-sdk?quickstart=1) — installs the SDK and starts the checkout example on forwarded port 8000 (`/` demo form, `/docs`). Add `BKASH_APP_KEY`, `BKASH_APP_SECRET`, `BKASH_USERNAME` and `BKASH_PASSWORD` as Codespaces secrets to make real sandbox payments; without them the sandbox rejects `POST /checkout`. |
 | One-click deploy | [![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/AkibUllah/bkash-python-sdk) — `render.yaml` deploys the example and prompts for the four sandbox credentials; callback and IPN URLs follow the Render hostname. |
 | Local | `docker compose up` (see Quick Start) |
+
+## Screenshots
+
+![Swagger UI of the checkout example](docs/images/api-reference.png)
+
+Live API reference on GitHub Pages for the bundled FastAPI checkout example.
+
+![test, mypy and ruff output](docs/images/terminal-demo.png)
+
+A real local run of the test suite (token caching and refresh, retries, error mapping, IPN helpers), `mypy --strict` and ruff.
 
 ## Why this exists
 
@@ -230,10 +242,10 @@ Covered: grant request shape, token caching, refresh near expiry, fallback to gr
 
 ## Roadmap
 
-- Agreement (tokenized "0001"/"0000" mode) create/execute/cancel endpoints
-- Recorded sandbox cassettes for contract tests against real responses
-- Optional `requests`-free Django integration helpers (view mixins for callback/IPN)
-- Structured logging hooks for request/response tracing with secret redaction
+- [ ] Agreement (tokenized "0001"/"0000" mode) create/execute/cancel endpoints (#1)
+- [ ] Recorded sandbox cassettes for contract tests against real responses (#2)
+- [ ] Optional `requests`-free Django integration helpers (view mixins for callback/IPN) (#3)
+- [ ] Structured logging hooks for request/response tracing with secret redaction (#4)
 
 ## License
 
